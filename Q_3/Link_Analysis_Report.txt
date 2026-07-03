@@ -1,0 +1,56 @@
+Q3: File System and Link Analysis
+
+Commands executed:
+1. echo "Linux link test file" > original.txt
+   Output: No terminal output.
+   Observation: A regular file was created to act as the source object for link testing.
+
+2. ln original.txt hardlink.txt
+   Output: No terminal output.
+   Observation: A hard link was created, pointing to the same inode as the original file.
+
+3. ln -s original.txt symlink.txt
+   Output: No terminal output.
+   Observation: A symbolic link was created that stores the target path instead of the file data.
+
+4. ls -li
+   Output: original.txt and hardlink.txt shared inode 1310805; symlink.txt had inode 1310806.
+   Observation: The inode numbers confirm that the hard link is another name for the same file, while the symlink is a separate object.
+
+5. stat original.txt hardlink.txt symlink.txt
+   Output: original.txt and hardlink.txt reported Links: 2; symlink.txt reported symbolic link metadata.
+   Observation: The metadata shows that the hard link count increased and the symlink is resolved separately from the file contents.
+
+6. cat original.txt
+   Output: Linux link test file
+   Observation: The original file contents were readable before deletion.
+
+7. cat hardlink.txt
+   Output: Linux link test file
+   Observation: The hard link produced the same contents because both names referenced the same inode.
+
+8. cat symlink.txt
+   Output: Linux link test file
+   Observation: The symlink resolved correctly while the target file still existed.
+
+9. rm original.txt
+   Output: No terminal output.
+   Observation: Removing the original name did not remove the underlying data because the hard link still existed.
+
+10. ls -li
+   Output: hardlink.txt remained and symlink.txt still pointed to original.txt.
+   Observation: The hard link preserved access to the file contents, but the symlink now pointed to a missing path.
+
+11. cat hardlink.txt
+   Output: Linux link test file
+   Observation: The hard link continued to work after the original name was deleted.
+
+12. cat symlink.txt
+   Output: cat: symlink.txt: No such file or directory
+   Observation: The symbolic link broke once its target file was removed.
+
+Summary:
+- Inode numbers: original.txt and hardlink.txt = 1310805, symlink.txt = 1310806
+- Hard link behavior: shares the same inode and survives deletion of the original name
+- Symbolic link behavior: stores a path reference and breaks when the target is removed
+- Conclusion: hard links preserve file data through inode references, while symlinks depend on the target path

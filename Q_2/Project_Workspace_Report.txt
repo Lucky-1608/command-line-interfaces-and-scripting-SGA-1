@@ -1,0 +1,45 @@
+Q2: Secure Project Workspace Setup
+
+Commands executed:
+1. mkdir -p secure_workspace/{docs,src,logs}
+   Output: No terminal output.
+   Observation: The project workspace and its three subdirectories were created successfully.
+
+2. touch secure_workspace/docs/plan.txt secure_workspace/src/app.txt secure_workspace/logs/activity.log
+   Output: No terminal output.
+   Observation: Placeholder files were created for documentation, application code, and activity logging.
+
+3. ls -ld secure_workspace secure_workspace/*
+   Output: Initial permissions were drwxrwxrwx+ for the workspace and subdirectories.
+   Observation: The workspace started with open permissions before hardening.
+
+4. chmod 750 secure_workspace
+   Output: No terminal output.
+   Observation: The top-level workspace directory was restricted so only the owner can fully access it.
+
+5. chmod 750 secure_workspace/docs secure_workspace/src secure_workspace/logs
+   Output: No terminal output.
+   Observation: All subdirectories were locked down with owner full access and group read/execute access.
+
+6. chmod 640 secure_workspace/docs/plan.txt secure_workspace/src/app.txt secure_workspace/logs/activity.log
+   Output: No terminal output.
+   Observation: The files were intended to be limited to owner read/write and group read-only access.
+
+7. ls -ld secure_workspace secure_workspace/*
+   Output: Permissions changed to drwxr-x---+ for the directories.
+   Observation: The directory permissions were successfully hardened after chmod.
+
+8. ls -l secure_workspace/*
+   Output: plan.txt and app.txt show -rw-r-----, while activity.log remained -rw-rw-rw- because the later chmod command in the screenshot was truncated to activity instead of activity.log.
+   Observation: Two files were secured as intended, and the log file reveals the effect of the command typo in the screenshot.
+
+9. umask
+   Output: 0022
+   Observation: The umask explains why newly created files initially inherited standard owner-write and world-readable defaults before permissions were tightened.
+
+Summary:
+- Directory structure created: secure_workspace/docs, secure_workspace/src, secure_workspace/logs
+- Permissions before modification: 777-style defaults on the created directories
+- Permissions after modification: 750 for directories and 640 for the intended files
+- Ownership: codespace:codespace
+- Umask used: 0022

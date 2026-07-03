@@ -1,0 +1,5 @@
+total 12
+-rw-rw-rw- 1 codespace codespace  16 Jul  3 15:56 app.log
+-rw-rw-rw- 1 codespace codespace 316 Jul  3 15:54 combined.txt
+-rw-rw-rw- 1 codespace codespace  64 Jul  3 15:53 stderr.txt
+-rw-rw-rw- 1 codespace codespace   0 Jul  3 15:59 stdout.txt

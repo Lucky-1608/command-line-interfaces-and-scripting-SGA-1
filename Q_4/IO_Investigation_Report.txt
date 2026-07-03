@@ -1,0 +1,52 @@
+Q4: File Access and I/O Investigation
+
+Commands executed:
+1. echo "sample log line" > app.log
+   Output: No terminal output.
+   Observation: A sample log file was created to simulate an application log.
+
+2. lsof | head -n 20
+   Output: A list of open files for running processes was displayed.
+   Observation: This confirmed that Linux tracks open files per process, including device files, pipes, and directories.
+
+3. exec 3<app.log
+   Output: No terminal output.
+   Observation: File descriptor 3 was opened for reading from app.log in the current shell.
+
+4. lsof -p $$
+   Output: The bash process showed descriptor 3r pointing to app.log.
+   Observation: The process table view confirmed the shell had app.log open through an additional file descriptor.
+
+5. ls -l /proc/$$/fd | grep app.log
+   Output: lr-x------ 1 codespace codespace 64 ... 3 -> /workspaces/command-line-interfaces-and-scripting-SGA-1/Q_4/app.log
+   Observation: The /proc filesystem exposed the same open descriptor mapping from the kernel’s perspective.
+
+6. ls -l /proc/$$/fd
+   Output: Standard descriptors 0, 1, 2, and 255 pointed to the terminal, and descriptor 3 pointed to app.log.
+   Observation: This shows how Linux represents each open stream as a file descriptor entry.
+
+7. ls -l > stdout.txt
+   Output: No terminal output.
+   Observation: Standard output was redirected to stdout.txt instead of the terminal.
+
+8. ls /not_a_real_path 2> stderr.txt
+   Output: No terminal output on screen.
+   Observation: The error message was redirected into stderr.txt, demonstrating separate handling of standard error.
+
+9. (ls -l && ls /not_a_real_path) > combined.txt 2>&1
+   Output: Combined normal output and error output were written to one file.
+   Observation: Redirecting stderr to stdout captured both success and failure messages together.
+
+10. ulimit -a
+   Output: Resource limits such as open files = 524288 and stack size = 8192 KB were displayed.
+   Observation: The shell shows per-process resource limits that help control file and memory usage.
+
+11. exec 3<&-
+   Output: No terminal output.
+   Observation: The extra file descriptor was closed after the investigation completed.
+
+Summary:
+- Open files identified: app.log was opened through descriptor 3
+- File descriptor observations: 0, 1, 2 are standard streams; 3 was the additional log handle
+- Redirection results: stdout.txt, stderr.txt, and combined.txt captured output as expected
+- Resource limits observed: open files 524288, stack size 8192 KB, memory unlimited in this environment

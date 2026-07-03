@@ -1,0 +1,26 @@
+Q5: Storage Health Assessment and Documentation
+
+Commands executed:
+1. lsblk
+   Output: Multiple loop devices, sda, sdb, sdc, and their partitions were listed.
+   Observation: The environment exposes both container-backed loop devices and physical-like block devices for storage inspection.
+
+2. mount | head -5
+   Output: Overlay, proc, tmpfs, devpts, and sysfs mounts were shown.
+   Observation: The system uses overlay filesystems and standard virtual mounts typical of containerized Linux environments.
+
+3. df -h
+   Output: Disk usage showed overlay at 33%, /vscode at 81%, /tmp at 5%, and /workspaces at 33%.
+   Observation: The /vscode mount is the most space-constrained area among the listed filesystems.
+
+4. df -i
+   Output: Inode usage showed overlay and /workspaces at 10%, /vscode at 7%, and /tmp at 1%.
+   Observation: Inode exhaustion is not an immediate concern in this workspace, because inode usage is still low.
+
+Summary:
+- Available storage devices: loop devices, sda, sdb, sdc, and sr0
+- Mounted file systems: overlay, proc, tmpfs, devpts, sysfs, and other runtime mounts
+- Disk usage: mostly healthy, with /vscode using the highest percentage in the captured output
+- Inode utilization: low across all shown mounts
+- Recommendation: monitor /vscode more closely and continue cleaning temporary or unused files if that mount grows
+

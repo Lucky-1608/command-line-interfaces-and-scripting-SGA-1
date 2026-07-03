@@ -1,0 +1,33 @@
+Q1: Linux Environment Verification
+
+Commands executed:
+1. whoami
+   Output: codespace
+   Observation: The active user account is codespace, which is the identity used for this workspace session.
+
+2. id
+   Output: uid=1000(codespace) gid=1000(codespace) groups=1000(codespace),985(pipx),986(python),987(oryx),988(golang),989(docker),990(sdkman),991(rvm),992(php),993(conda),994(nvs),995(nvm),996(hugo),1001(ssh)
+   Observation: The account belongs to several supplemental groups, showing access to multiple development tools and services.
+
+3. echo "$SHELL"
+   Output: /bin/bash
+   Observation: The current shell is Bash, which is the command interpreter in use for this session.
+
+4. pwd
+   Output: /
+   Observation: The current working directory is the filesystem root at the time of verification.
+
+5. ls -ls
+   Output: Directory listing of the root filesystem showing system folders, mounted paths, and permissions.
+   Observation: The workspace is running in a Linux environment with standard system directories and mounted container paths.
+
+6. curl -s --max-time 10 https://youtube.com > /dev/null && echo "Network: youtube.com reachable"
+   Output: Network: youtube.com reachable
+   Observation: The network check succeeded, so outbound connectivity to youtube.com is working from the environment.
+
+Summary:
+- Username: codespace
+- Groups: codespace plus development-related supplemental groups
+- Shell: /bin/bash
+- Working directory: /
+- Network: reachable to youtube.com
